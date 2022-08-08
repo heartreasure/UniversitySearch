@@ -1,0 +1,68 @@
+.address-box{
+	margin-left: 20px;
+	margin-top: 20px;
+	border: 2px solid #e6e6e6;
+	padding: 10px;
+    line-height: 22px;
+    width: 788px;
+}
+.address-head{
+	padding-left: 10px;
+    line-height: 35px;
+    height: 35px;
+    position: relative;
+    display: inline-block;
+    display: block;
+    overflow: visible;
+}
+.address-h3{
+    color: #666;
+}
+.address-body{
+	width: 788px;
+	
+}
+.address-item{
+	margin-top: 7px;
+	padding-left: 7px;
+}
+.address-label{
+	display: inline-block;
+    width: 70px;
+    color: #999;
+    text-align: right;
+    
+}
+.address-link{
+	display: inline-block;
+	width: 50px;
+	margin-left: 690px;
+	text-align:right;
+	color:#005ea7;
+}
+.address-link1{
+	text-align:right;
+	color:#005ea7;
+}
+.address-button{
+	margin-left: 20px;
+	margin-top: 20px;
+    line-height: 22px;
+    width: 788px;
+}
+.address-button a{
+	height: 100px;
+	display: inline-block;
+	background-color: #f5fbef;
+	border-radius: 2px;
+    border: 1px solid #bfd6af;
+    color: #323333;
+    
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 700;
+    padding: 6px 20px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 18px;
+}
