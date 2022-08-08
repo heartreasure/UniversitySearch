@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>高校门户网站综合检索系统</title>
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <!--<link href="assets/images/apple-touch-icon.png" rel="apple-touch-icon">-->
+
+    <!-- 外联CSS文件 -->
+    <link href="{% static 'assets/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+
+    <!--</style>
+<!--end header footer color-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top header-transparent" style="background-color: #35383F;opacity: 0.5">
+    <div class="container">
+
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span>Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li class="active"><a href="#desc">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+<!-- ======= Desc Section ======= -->
+<section id="desc" class="d-flex justify-cntent-center align-items-center">
+    <div id="heroCarousel" class="container carousel carousel-fade" data-ride="carousel">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+            <div class="carousel-container">
+                <h2 class="animated fadeInDown">个性化的搜索平台</h2>
+                <p class="animated fadeInUp">
+                    在这里，你可以点击导航栏中的“词库搜索”去获取一些你想知道的信息，同时在“更多功能”选项卡中，可以对你的个性化词库进行管理，还能体验一些有趣的搜索功能，去尝试发现一些惊喜吧！</p>
+                <a href="{% url 'search_index' %}" class="btn-get-started animated fadeInUp">立即前往</a>
+            </div>
+        </div>
+
+        {% if not user.username %}
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="carousel-container">
+                    <h2 class="animated fadeInDown">拥有一个个人账户</h2>
+                    <p class="animated fadeInUp">为了保证词库信息不会丢失，我们建议您注册一个账户，可以点击下方的按钮或者导航栏的相应模块进行注册和登录。
+                        拥有一个账户后，我们能记录您的更改，您添加的词库信息就会在下次登录后仍然留有，更能体验一些“个人中心”中的有趣功能，去拥有一个属于自己的账号吧！</p>
+                    <a href="{% url 'userRegister' %}" class="btn-get-started animated fadeInUp">立即注册/登录</a>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+            <div class="carousel-container">
+                <h2 class="animated fadeInDown">更多功能</h2>
+                <p class="animated fadeInUp">
+                    我们在网站中添加了一些独具创意性的功能，也设计了许多十分的实用和贴心的模块，点击下方的“立即前往”我们会指引你去了解网站的特色，发现更多有趣的功能，赶紧试试吧！</p>
+                <a href="{% url 'center_index' %}" class="btn-get-started animated fadeInUp">立即前往</a>
+            </div>
+        </div>
+
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+
+    </div>
+</section>
+<!-- End Desc -->
+
+
+<!--main model start-->
+<main id="feature">
+
+    <!-- ======= Features Section ======= -->
+    <section class="features">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>网站特色</h2>
+                <p>
+                    高校门户网站检索系统主要分为网站基本功能，搜索模块和用户模块三个部分，每部分都有许多创意实用的功能，
+                    而不仅仅只能用于简单的检索信息，希望能够满足用户一些细微的需求，在使用的过程中，如果遇到什么问题，
+                    或者您认为有哪些需要改进的地方，欢迎点击上方导航栏中的“联系我们”留下您宝贵的意见，我会悉心听取并加以改进。
+                </p>
+            </div>
+
+            <!--等到开发彻底完成之后，记得把图片更换成界面的相关截图-->
+            <div class="row" data-aos="fade-up">
+                <div class="col-md-5" style="margin-top: 20px">
+
+                    <img src="{% static 'assets/images/bg1.jpg' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-7 pt-4">
+                    <h3>网站基本功能</h3>
+                    <hr>
+                    <p>
+                        在该部分中，我设计了一些通用的功能，在高校门户网站检索系统中，不光能满足您检索信息的需求，同时也能拥有一个账号，
+                        打造一个属于自己的私有空间。
+                    </p>
+                    <ul>
+                        <li><i class="icofont-check"></i> 注册新账号</li>
+                        <li><i class="icofont-check"></i> 登录账号，账号信息在页面回显</li>
+                        <li><i class="icofont-check"></i> 重置账号密码</li>
+                        <li><i class="icofont-check"></i> 添加或者编辑个人信息</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" data-aos="fade-up">
+                <div class="col-md-5 order-1 order-md-2">
+                    <img src="{% static 'assets/images/bg2.jpg' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-7 pt-5 order-2 order-md-1">
+                    <h3>搜索模块</h3>
+                    <hr>
+                    <p>
+                        搜索是网站核心功能，我吸取和借鉴了市面上商业搜索引擎的成功经验，提供了多种搜索方式来满足用户的需求，
+                        同时用户在网站中也能很方便的添加、删除和编辑词库。
+                    </p>
+                    <ul>
+                        <li><i class="icofont-check"></i> 简单搜索单一学校词库，或联合多个学校进行查询</li>
+                        <li><i class="icofont-check"></i> 支持空格分隔多关键词进行高级搜索</li>
+                        <li><i class="icofont-check"></i> 以列表方式显示词库信息和所有学校的URL，便于管理</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" data-aos="fade-up">
+                <div class="col-md-5">
+                    <img src="{% static 'assets/images/bg3.jpg' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-7 pt-5">
+                    <h3>用户模块</h3>
+                    <hr>
+                    <p>网站大多数的附加功能都在用户模块中得以体现，分享和交流是APP和门户网站都应该具有的功能，
+                        在这里，同样有展现自己的舞台，记录生活点滴的角落。
+                    </p>
+                    <ul>
+                        <li><i class="icofont-check"></i> 我的动态和我的收藏模块</li>
+                        <li><i class="icofont-check"></i> 根据多个维度建立的用户画像</li>
+                        <li><i class="icofont-check"></i> 帮助和FAQ模块</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" data-aos="fade-up">
+                <div class="col-md-5 order-1 order-md-2">
+                    <img src="{% static 'assets/images/bg4.jpg' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-7 pt-5 order-2 order-md-1">
+                    <h3>管理员后台模块</h3>
+                    <hr>
+                    <p>
+                        网站需要超级用户对信息进行全方面管理，项目成功上线之后，随意修改数据库和源码显然是不合适的，
+                        因此设计一个网站后台，用可视化的方式来实现信息管理十分必要。
+                    </p>
+                    <ul>
+                        <li><i class="icofont-check"></i> 管理员权限认证</li>
+                        <li><i class="icofont-check"></i> 网站管理，修改默认词库</li>
+                        <li><i class="icofont-check"></i> 用户管理</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Features Section -->
+
+</main>
+<!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+
+    <div class="footer-newsletter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h4>联系我们</h4>
+                    <p>在使用过程中，如果您遇到什么问题，欢迎点击上方导航栏中的“联系我们”，留下您宝贵的意见！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>友情链接</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://www.baidu.com/" target="_blank">百度</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="http://www.google.cn/" target="_blank">谷歌中国</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://yz.chsi.com.cn/" target="_blank">中国研究生招生信息网</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://www.chsi.com.cn/"
+                                                                   target="_blank">学信网</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="http://www.neea.edu.cn/" target="_blank">中国教育考试网</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>我们的服务</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'index' %}">主页</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'feature' %}#feature">关于网站</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'userRegister' %}">注册/登录</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'search_index' %}">词库搜索</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'center_index' %}">个人中心</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>联系我们</h4>
+                    <p>
+                        天津市<br>
+                        滨海新区经济开发区<br>
+                        第十三大街29号（天津科技大学） <br><br>
+                        <strong>Phone:</strong> +131 7383 5301<br>
+                        <strong>Email:</strong> zhangheng_tust@126.com<br>
+                    </p>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>关于网站</h3>
+                    <p> 2020 <strong>天津科技大学毕业设计</strong> <br>
+                        A website designed by <strong>zhangheng</strong></p>
+                    <div class="social-links mt-3">
+                        <a href="javascript:void(0);" class="twitter"><i class="bx bxl-twitter"></i></a>
+                        <a href="javascript:void(0);" class="facebook"><i class="bx bxl-facebook"></i></a>
+                        <a href="javascript:void(0);" class="instagram"><i class="bx bxl-instagram"></i></a>
+                        <a href="javascript:void(0);" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="copyright">
+            &copy; Copyright <strong><span>高校门户网站检索系统</span></strong>. All Rights Reserved
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+<!-- 外联js文件 -->
+<script src="{% static 'assets/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/lib/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/lib/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/lib/waypoints/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'assets/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'assets/lib/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/lib/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/lib/aos/aos.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>高校门户网站综合检索系统</title>
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <!--<link href="assets/images/apple-touch-icon.png" rel="apple-touch-icon">-->
+
+    <!-- 外联CSS文件 -->
+    <link href="{% static 'assets/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span>Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active"><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+
+<main id="main">
+
+    <!-- ======= Contact Section ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Contract Us</h2>
+                <ol>
+                    <li><a href="{% url 'index' %}">主页</a></li>
+                    <li>联系我们</li>
+                </ol>
+            </div>
+
+        </div>
+    </section><!-- End Contact Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section class="contact" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <i class="bx bx-map"></i>
+                                <h3>联系地址</h3>
+                                <p>天津市滨海新区开发区第十三大街29号 天津科技大学</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box">
+                                <i class="bx bx-envelope"></i>
+                                <h3>邮件联系</h3>
+                                <p>zhangheng_tust@126.com<br>zhangheng_tust@163.com</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box">
+                                <i class="bx bx-phone-call"></i>
+                                <h3>电话联系</h3>
+                                <p>+131 7383 5301<br>+133 5706 7369</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <form action="" method="post" role="form" class="php-email-form" id="feedback_form">
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="请输入您的姓名"
+                                       data-rule="minlen:4" data-msg="Please enter at least 4 chars"/>
+                                <div class="validate"></div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="请输入您的邮件地址"
+                                       data-rule="email" data-msg="Please enter a valid email"/>
+                                <div class="validate"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" id="subject"
+                                   placeholder="请输入您的反馈意见类型，如：页面显示" data-rule="minlen:4"
+                                   data-msg="Please enter at least 8 chars of subject"/>
+                            <div class="validate"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" id='feedback' rows="5" data-rule="required"
+                                      data-msg="Please write something for us" placeholder="请输入您的反馈信息"></textarea>
+                            <div class="validate"></div>
+                        </div>
+                        <!--<div class="mb-3">-->
+                        <!--<div class="loading">Loading</div>-->
+                        <!--<div class="error-message"></div>-->
+                        <!--<div class="sent-message">你的消息已经发送，谢谢您的反馈！</div>-->
+                        <!--</div>-->
+                        <div class="feedback_msg" style='display: none;color: red'>表单字段不能为空</div>
+                        <div class="text-center">
+                            <button type="submit" style="border-radius: 5px">提交信息</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Contact Section -->
+
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+
+    <div class="footer-newsletter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h4>联系我们</h4>
+                    <p>在使用过程中，如果您遇到什么问题，欢迎点击上方导航栏中的“联系我们”，留下您宝贵的意见！</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>友情链接</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://www.baidu.com/" target="_blank">百度</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="http://www.google.cn/" target="_blank">谷歌中国</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://yz.chsi.com.cn/" target="_blank">中国研究生招生信息网</a>
+                        </li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="https://www.chsi.com.cn/"
+                                                                   target="_blank">学信网</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="http://www.neea.edu.cn/" target="_blank">中国教育考试网</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>我们的服务</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'index' %}">主页</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'feature' %}#feature">关于网站</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'userRegister' %}">注册/登录</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'search_index' %}">词库搜索</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{% url 'center_index' %}">个人中心</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h4>联系我们</h4>
+                    <p>
+                        天津市<br>
+                        滨海新区经济开发区<br>
+                        第十三大街29号（天津科技大学） <br><br>
+                        <strong>Phone:</strong> +131 7383 5301<br>
+                        <strong>Email:</strong> zhangheng_tust@126.com<br>
+                    </p>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-info">
+                    <h3>关于网站</h3>
+                    <p> 2020 <strong>天津科技大学毕业设计</strong> <br>
+                        A website designed by <strong>zhangheng</strong></p>
+                    <div class="social-links mt-3">
+                        <a href="javascript:void(0);" class="twitter"><i class="bx bxl-twitter"></i></a>
+                        <a href="javascript:void(0);" class="facebook"><i class="bx bxl-facebook"></i></a>
+                        <a href="javascript:void(0);" class="instagram"><i class="bx bxl-instagram"></i></a>
+                        <a href="javascript:void(0);" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--<hr>-->
+
+    <div class="container">
+        <div class="copyright">
+            &copy; Copyright <strong><span>高校门户网站检索系统</span></strong>. All Rights Reserved
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+<!--返回最顶端-->
+<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+<!-- 外联js文件 -->
+<script src="{% static 'assets/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/lib/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/lib/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/lib/waypoints/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'assets/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'assets/lib/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/lib/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/lib/aos/aos.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script src="{% static 'assets/js/feedback.js' %}"></script>
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+
+</body>
+
+</html>

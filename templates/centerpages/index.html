@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <title>高校门户网站综合检索系统</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- 外联CSS文件 -->
+    <!--<link href="../assets/lib/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <!--====================================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/lib/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CenterPage/assets/lib/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/main.css' %}">
+    <script src="{% static 'CenterPage/assets/js/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'CenterPage/assets/lib/bootstrap/js/bootstrap.js' %}"></script>
+    <!--弹窗样式-->
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/xcConfirm.css' %}"/>
+    <script src="{% static 'CenterPage/assets/js/xcConfirm.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#save_info").click(function () {
+                alert('保存成功！')
+                location.href = 'index.html';
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#excelImport").click(function () {
+                $('#fileupload').click();
+            });
+            $("#uploadSubmit").click(function () {
+
+                $('#excelForm').submit();
+            });
+            $('#fileupload').change(function () {
+                document.getElementById("textfield").value =
+                    document.getElementById("fileupload").files[0].name;
+            })
+        });
+    </script>
+
+</head>
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!-- the info page css -->
+<style>
+    .page-wrapper {
+        color: #6C757D;
+        font: 14px Rubik, sans-serif;
+    }
+
+    .m-t-10 {
+        color: #6C757D;
+        font: 18px Rubik, sans-serif;
+        margin: 10px 0px 12px;
+    }
+
+    .card-subtitle {
+        color: #ADB5BD;
+        font: 14px Rubik, sans-serif;
+        margin: -6px 0px 15px;
+    }
+
+    .wapper-btn-success {
+        color: #FFFFFF;
+        font: 14px Rubik, sans-serif;
+        background-color: #36BEA6;
+        padding: 6px 12px;
+    }
+
+    .wapper-btn-success:hover {
+        color: #FFFFFF;
+        background-color: #2EA08C;
+    }
+</style>
+<!--end info page css-->
+
+<!--the explore css-->
+<style>
+    .fixed-top {
+        height: 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        font-size: 16px;
+    }
+
+    .explore {
+        font-family: "Open Sans", sans-serif;
+        padding-left: 15px;
+
+    }
+
+    .container {
+        padding-right: 30px;
+    }
+</style>
+<!--end the explore css-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<!--the header scroll-->
+<script>
+    $(function () {
+        // Toggle .header-scrolled class to #header when page is scrolled
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+            } else {
+                $('#header').removeClass('header-scrolled');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+        }
+    })
+</script>
+<!--end the header scroll-->
+
+<body class="theme-blue">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left" style="float: left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block" style="float: right;">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li class="active"><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+    <!-- 侧边导航栏 -->
+    <div class="sidebar-nav">
+        <ul>
+            <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
+                <i class="fa fa-fw fa-envelope"></i>
+                我的资料<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="dashboard-menu nav nav-list collapse in">
+                    <li class="active"><a href="{% url 'center_index' %}"><span class="fa fa-caret-right"></span> 我的个人信息</a>
+                    </li>
+                    <li><a href="{% url 'center_resetPassword' %}"><span class="fa fa-caret-right"></span> 重置密码</a></li>
+                </ul>
+            </li>
+
+            <!-- data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." -->
+            <li data-popover="true" rel="popover" data-placement="right"><a href="#" data-target=".premium-menu"
+                                                                            class="nav-header collapsed"
+                                                                            data-toggle="collapse"><i
+                    class="fa fa-fw fa-fighter-jet"></i> 我的足迹<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="premium-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_dynamic' 1 %}"><span class="fa fa-caret-right"></span> 我的动态</a></li>
+                    <li><a href="{% url 'center_collection' %}"><span class="fa fa-caret-right"></span> 我的收藏</a></li>
+                    {#                    <li><a href="history.html"><span class="fa fa-caret-right"></span> 历史记录</a></li>#}
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-calendar"></i>
+                我的用户画像<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="legal-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_overview' %}"><span class="fa fa-caret-right"></span> 概览</a></li>
+                    <li><a href="{% url 'center_analysis' %}"><span class="fa fa-caret-right"></span> 图表分析</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-briefcase"></i>
+                后台管理 <i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="accounts-menu nav nav-list collapse">
+                    <!--<li><a href="user.html"><span class="fa fa-caret-right"></span> 新增用户/网站</a></li>-->
+                    <li><a href="/admin"><span class="fa fa-caret-right"></span> 后台主页</a></li>
+                    <li><a href="/admin/index"><span class="fa fa-caret-right"></span> 用户信息</a></li>
+                    <li><a href="/admin/usercenter"><span class="fa fa-caret-right"></span> 动态和收藏</a></li>
+                    <li><a href="/admin/searchcenter"><span class="fa fa-caret-right"></span> 高校网站信息</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'center_help' %}" class="nav-header"><i class="fa fa-fw fa-question-circle"></i> 帮助</a>
+            </li>
+            <li><a href="{% url 'center_faq' %}" class="nav-header"><i class="fa fa-fw fa-comment"></i> FAQ</a></li>
+        </ul>
+    </div>
+    <!-- 结束侧边导航栏 -->
+</main>
+
+
+<!-- 右侧内容开始 -->
+<div class="content">
+    <!-- header start -->
+    <div class="header">
+        <div class="stats">
+            <p class="stat"><span class="label label-info">6</span> Items</p>
+            <p class="stat"><span class="label label-success">{{ accomplished }}</span> Accomplished</p>
+            <p class="stat"><span class="label label-danger">{{ Unaccomplished }}</span> Unaccomplished</p>
+        </div>
+
+        <h1 class="page-title">我的个人信息</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'center_index' %}">我的资料</a></li>
+            <li class="active">我的个人信息</li>
+        </ul>
+
+    </div>
+    <!-- header end -->
+
+    <!-- main-content start -->
+    <div class="main-content">
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <center class="m-t-30">
+                                    {% if request.user.photo %}
+                                        <a href="#"><img src="{{ request.user.photo.url }}"
+                                                     class="img-circle"
+                                                     width="150"/></a>
+                                        {% else %}
+                                        <a href="#"><img src="{% static 'CenterPage/assets/images/dongman.jpeg' %}"
+                                                     class="img-circle"
+                                                     width="150"/></a>
+                                    {% endif %}
+
+                                    <h4 class="card-title m-t-10">{{ request.user.name }}</h4>
+                                    <h6 class="card-subtitle">{{ request.user.introduce }}</h6>
+                                    <div class="row text-center justify-content-md-center">
+                                        <!-- <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
+                                    <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div> -->
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card">
+                            <!-- Tab panes -->
+                            <div class="card-body">
+                                <form class="form-horizontal form-material" id="center_page_form" method="post"
+                                      action="" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="col-md-12">用户名</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder=""
+                                                   class="form-control form-control-line"
+                                                   value="{{ request.user.username }}"
+                                                   name="username">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12">昵称</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="zhang heng"
+                                                   class="form-control form-control-line"
+                                                   value="{{ request.user.name }}" name="name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example-email" class="col-md-12">Email</label>
+                                        <div class="col-md-12">
+                                            <input type="email"
+                                                   class="form-control form-control-line" name="email"
+                                                   id="example-email" value="{{ request.user.email }}">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group">
+                                    <label class="col-md-12">密码</label>
+                                    <div class="col-md-12">
+                                        <input type="password" value="password" class="form-control form-control-line" readonly="readonly">
+                                    </div>
+                                </div> -->
+                                    <div class="form-group">
+                                        <label class="col-md-12">联系电话</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="如：123 4568 7896"
+                                                   class="form-control form-control-line" name="telephone"
+                                                   value="{{ request.user.telephone }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12">基本信息</label>
+                                        <div class="col-md-12">
+                                            <textarea rows="1" class="form-control form-control-line"
+                                                      placeholder="用文字描述一下自己吧"
+                                                      name="personalInfo">{{ request.user.introduce }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-12">用户头像</label>
+                                        <div class="col-md-12">
+                                            <input id="fileupload" type="file" name="fileupload" accept=".jpg,.jpeg"
+                                                   multiple="" style="display:none;"/>
+                                            <input type='text' class="form-control" name='textfield' id='textfield'
+                                                   autocomplete="off" placeholder="请点击右侧的浏览按钮上传头像" style="display: inline;width: 90%"/>
+                                            <input id="excelImport" type="button" value="浏览" class="btn wapper-btn-success" style="margin-top: -5px; line-height: 20px"/>
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group">-->
+                                    <!--<label class="col-sm-12">国家和地区</label>-->
+                                    <!--<div class="col-sm-12">-->
+                                    <!--<select class="form-control form-control-line">-->
+                                    <!--<option>中国</option>-->
+                                    <!--<option>Australia</option>-->
+                                    <!--<option>India</option>-->
+                                    <!--<option>Usa</option>-->
+                                    <!--<option>Canada</option>-->
+                                    <!--<option>Thailand</option>-->
+                                    <!--</select>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+
+                                    <div class="form-group">
+                                        <label class="col-md-12">详细地址</label>
+                                        <div class="col-md-12">
+                                            <textarea rows="2" class="form-control form-control-line"
+                                                      placeholder="请输入详细地址"
+                                                      name="address">{{ request.user.address }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="submit" class="btn wapper-btn-success" id="save_info"
+                                                   value="保存修改">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+            </div>
+            <!-- End Container fluid  -->
+        </div>
+        <!-- End Page wrapper  -->
+
+
+        <!-- footer start -->
+        <footer>
+            <hr>
+            <p class="pull-right">A <a href="javascript:;">website</a>
+                by <a href="javascript:;">zhangheng</a></p>
+            <p>Â© 2020 <a href="javascript:;">高校门户网站检索系统</a></p>
+        </footer>
+        <!-- footer end -->
+
+
+    </div>
+    <!-- maincontent end -->
+
+</div>
+<!-- 右侧内容结束 -->
+
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+
+</body>
+</html>

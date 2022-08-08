@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
+    <title>高校门户网站综合检索系统</title>
+    <!-- This page CSS -->
+    <!-- chartist CSS -->
+    <link href="{% static 'SearchPage/assets/node_modules/morrisjs/morris.css' %}" rel="stylesheet">
+    <!--c3 plugins CSS -->
+    <link href="{% static 'SearchPage/assets/node_modules/c3-master/c3.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'SearchPage/html/dist/css/style.css' %}" rel="stylesheet">
+    <!-- Dashboard 1 Page CSS -->
+    <link href="{% static 'SearchPage/html/dist/css/pages/icon-page.css' %}" rel="stylesheet">
+    <link href="{% static 'SearchPage/html/dist/css/pages/dashboard1.css' %}" rel="stylesheet">
+    <link href="{% static 'SearchPage/html/dist/css/bootstrap.css' %}"/>
+
+    <!--=====================================================================================================-->
+    <!-- 外联CSS文件 -->
+    <!--<link href="../../assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!--=====================================================================================================-->
+
+
+</head>
+
+<!--the self css-->
+<style>
+    .form-control {
+        display: inline-block;
+        /* width: 500px; */
+        margin-bottom: 20px;
+        height: 29px;
+        border-radius: 5px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        border: 1px solid #ccc;
+
+    }
+
+    .form-control:focus {
+        border-style: solid;
+        border-color: #03a9f4;
+        box-shadow: 1px 1px 5px #03a9f4;
+    }
+
+    .search_btn {
+        display: inline-block;
+        width: 100px;
+        margin-left: 0;
+    }
+
+    .card-body p {
+        /* border-bottom: 1px solid #CCCCCC; */
+        padding: 10px 0 10px 0;
+    }
+
+    section {
+        padding: 0;
+    }
+
+</style>
+<!--end the self css-->
+
+<!--导航栏相关样式-->
+<style>
+    #sidebarnav li {
+        margin-top: 50px;
+    }
+
+    .left-sidebar {
+        margin-top: 70px;
+    }
+
+    .scrolled-sidebar {
+        margin-top: 60px;
+        height: 100%;
+    }
+
+    .explore {
+        margin-left: -85px;
+    }
+
+    .nav-menu {
+        margin-right: -85px;
+    }
+
+    .nav-text-box {
+        padding-top: 20px !important;
+    }
+</style>
+<!--end 导航栏样式-->
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body class="skin-default-dark fixed-layout">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li class="active"><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+<main id="main">
+</main>
+<div id="main-wrapper">
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <aside class="left-sidebar" id="left-sidebar">
+        <div class="d-flex no-block nav-text-box align-items-center">
+            <span><img src="{% static 'assets/images/favicon.png' %}" alt="elegant admin template"></span>
+            <a class="waves-effect waves-dark ml-auto hidden-sm-down" href="javascript:void(0)"><i class="ti-menu"></i></a>
+            <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i
+                    class="ti-menu ti-close"></i></a>
+        </div>
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_index' %}" aria-expanded="false"><i
+                            class="fa fa-search"></i><span class="hide-menu">词库搜索</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_manage' 1 %}" aria-expanded="false"><i
+                            class="fa fa-user-circle-o"></i><span class="hide-menu">搜索词库管理</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_schoolList' %}" aria-expanded="false"><i
+                            class="fa fa-table"></i><span class="hide-menu"></span>学校URL列表</a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_recommend' %}" aria-expanded="false"><i
+                            class="fa fa-star"></i><span class="hide-menu"></span>分类检索及相关推荐</a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_help' %}" aria-expanded="false"><i
+                            class="fa fa-question-circle"></i><span class="hide-menu"></span>使用帮助</a></li>
+                    <!-- <i class="fa fa-mortar-board"></i> -->
+                    <!-- <div class="text-center m-t-30">
+                        <a href="#" class="btn waves-effect waves-light btn-success hidden-md-down"> Upgrade to Pro</a>
+                    </div> -->
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid" style="margin-top: -80px;">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">分类检索和相关推荐</h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">词库信息管理</a></li>
+                            <li class="breadcrumb-item active">分类检索和相关推荐</li>
+                        </ol>
+                        <a class="btn btn-success d-none d-lg-block m-l-15" href="#"> 使用帮助</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ============================================================== -->
+
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <input class="input-xlarge form-control" placeholder="请在左侧的选择分类进行检索..." id="keyword" type="text" disabled="disabled" style="background-color: #ffffff;">
+
+
+                </div>
+                <div class="col-lg-4">
+                    <a class="btn btn-success d-none d-lg-block search_btn" href="#" onclick="submit()"> <i
+                            class="fa fa-search"></i>
+                        搜索</a>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Yearly Sales -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">选择分类</h5>
+                            <h6 class="card-subtitle">Choose The Category</h6>
+                            <hr>
+                            <h5>招生信息</h5>
+                            <section>
+                                <div class="icon-list-demo row">
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-edit"></i>高考</div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-address-card-o"></i>本科生
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-address-card"></i>研究生
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-id-card"></i>博士</div>
+                                </div>
+                            </section>
+                            <hr>
+
+                            <h5>校园生活</h5>
+                            <section>
+                                <div class="icon-list-demo row">
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-calendar-o"></i>学习日常</div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-modx"></i>校园风景</div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-address-book-o"></i>社团活动
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-book"></i>学术讲座</div>
+                                </div>
+                            </section>
+                            <hr>
+
+                            <h5>工作与就业</h5>
+                            <section>
+                                <div class="icon-list-demo row">
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-phone"></i>校园招聘</div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-calendar-check-o"></i>就业信息
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-handshake-o"></i>大学生创业
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3"><i class="fa fa-plane"></i>出国留学</div>
+                                </div>
+                            </section>
+                            <hr>
+                            <div style="text-align: center;">
+                                <a href="javascript:void(0)"
+                                   class="btn m-t-10 m-r-5 btn-rounded btn-outline-success" id="confirm">确定</a>
+                                <a
+                                        href="javascript:void(0)"
+                                        class="btn m-t-10 btn-rounded btn-outline-danger" id="clear">重置</a>
+                            </div>
+                            <input type="hidden" id="textValue" value="">
+
+                        </div>
+                    </div>
+                </div>
+                {% comment %}<div class="col-lg-8">
+                    <!-- ============================================================== -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body" style="height: 522px">
+                                    <h5 class="card-title">选择学校</h5>
+                                    <h6 class="card-subtitle">Choose The School</h6>
+                                    <section>
+                                        <div class="icon-list-demo row">
+                                            {% for school in build_school_list %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <hr>
+                                    </section>
+                                    <div style="text-align: center;">
+                                        <a href="javascript:void(0)"
+                                           class="btn m-t-10 m-r-5 btn-rounded btn-outline-success">确定</a> <a
+                                            href="javascript:void(0)" class="btn m-t-10 btn-rounded btn-outline-danger">重置</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                </div>{% endcomment %}
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body" style="overflow: scroll; height: 530px;">
+                            <h5 class="card-title">选择需要检索的学校</h5>
+                            <h6 class="card-subtitle">Choose The Schools</h6>
+                            <hr style="margin-bottom: -15px">
+                            <div class="steamline m-t-40">
+                                {% for school in build_school_list %}
+                                    <div class="sl-item"
+                                         style="cursor: pointer; padding-top: 20px;margin-bottom: -20px;padding-left: 20px; border-radius: 5px"
+                                         onclick="selectSchool({{ school.id }})" onmouseover="changeColor(this)"
+                                         onmouseleave="changeColor2(this)">
+                                        <div class="sl-left bg-success" style="background-color: #444444!important;"><i
+                                                class="fa fa-mortar-board"></i></div>
+                                        <div class="sl-right">
+                                            <div class="font-medium">{{ school.school_name }}<i
+                                                    class="fa fa-check-circle" id="check{{ school.id }}"
+                                                    style="margin-top: 13px;margin-right: 10px; color: gray; display: none; float: right; font-size: 18px"></i>
+                                            </div>
+                                            <div class="desc" style="font-size: 12px; color: #ADB5BD">{{ school.area }}
+                                            </div>
+                                            <input type="hidden" id="hidden{{ school.id }}" value=""
+                                                   class="hiddenInput">
+                                        </div>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div style="text-align: center;margin-top: 20px">
+                                <a href="javascript:void(0)" class="btn m-t-10 m-r-5 btn-rounded btn-outline-success"
+                                   onclick="selectAll('{{ all_school_id_str }}')">全选</a>
+                                <a href="javascript:void(0)" class="btn m-t-10 btn-rounded btn-outline-danger"
+                                   onclick="clearAll('{{ all_school_id_str }}')">清空</a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!--footer-->
+    <footer class="footer" style="text-align: right;"> © 2020 <a href="javascript:;">高校门户网站检索系统</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    </footer>
+    <!-- End footer -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{% static 'SearchPage/assets/node_modules/jquery/jquery-3.2.1.min.js' %}"></script>
+<!-- Bootstrap popper Core JavaScript -->
+<script src="{% static 'SearchPage/assets/node_modules/popper/popper.min.js' %}"></script>
+<script src="{% static 'SearchPage/assets/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="{% static 'SearchPage/html/dist/js/perfect-scrollbar.jquery.min.js' %}"></script>
+<!--Wave Effects -->
+<script src="{% static 'SearchPage/html/dist/js/waves.js' %}"></script>
+<!--Menu sidebar -->
+<script src="{% static 'SearchPage/html/dist/js/sidebarmenu.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static 'SearchPage/html/dist/js/custom.min.js' %}"></script>
+
+<!--the page scroll event-->
+<script>
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+                $("#left-sidebar").addClass('scrolled-sidebar');
+
+            } else {
+                $('#header').removeClass('header-scrolled');
+                $("#left-sidebar").removeClass('scrolled-sidebar');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+            $("#left-sidebar").addClass('scrolled-sidebar');
+        }
+    })
+</script>
+<!--end the page scroll event-->
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+{#选择分类#}
+<script>
+    $(function () {
+        $('.icon-list-demo div').click(function () {
+            $('.icon-list-demo div').css('background-color', 'rgb(255, 255, 255)');
+            $(this).css("background-color", 'rgb(248, 249, 250)')
+            $('#textValue').val($(this).text())
+        });
+        $('#confirm').click(function () {
+            $('.icon-list-demo div').css('background-color', 'rgb(255, 255, 255)');
+            $('#keyword').val($('#textValue').val())
+        });
+        $('#clear').click(function () {
+            $('.icon-list-demo div').css('background-color', 'rgb(255, 255, 255)');
+            $('#keyword').val('');
+        });
+    })
+</script>
+{#end 选择分类#}
+
+
+{#页面相关js#}
+<script>
+    function changeColor(elem) {
+        elem.style.background = '#F8F9FA'
+    }
+
+    function changeColor2(elem) {
+        elem.style.background = '#ffffff'
+    }
+</script>
+<script>
+    function selectSchool(id) {
+        // 隐藏域id值
+        str_id = "hidden" + id.toString();
+        // 控制是否选中
+        check_id = "check" + id.toString();
+
+        hidden_elem = document.getElementById(str_id);
+        check_elem = document.getElementById(check_id);
+        // 给隐藏域赋值并选中当前
+        if (check_elem.style.display === 'none') {
+            check_elem.style.display = 'inline-block';
+            hidden_elem.value = id;
+        }
+        // 清空赋值,变为未选中
+        else {
+            check_elem.style.display = 'none';
+            hidden_elem.value = "";
+        }
+
+    }
+</script>
+<script>
+    function submit() {
+        // 搜索的关键词
+        keyword = document.getElementById('keyword').value;
+        // 隐藏域所有元素
+        elem = document.getElementsByClassName('hiddenInput');
+        // 所有选择学校合成的字符串
+        select_school = "";
+        //字符串赋值
+        for (var i = 0; i < elem.length; i++) {
+            if (elem[i].value !== "")
+                select_school += elem[i].value + " ";
+        }
+        if(select_school === ""||keyword===""){
+            if(select_school===""){
+                alert('请至少选择一个学校进行检索');
+            }
+            else {
+                alert('搜索的关键词不能为空');
+            }
+
+        }
+        else{
+            location.href = '/search/search_categoryResult/'+select_school+"/"+keyword+"/1";
+        }
+    }
+</script>
+<script>
+    function selectAll(id_list) {
+        list = id_list.split(" ");
+        for (var i = 0; i < list.length - 1; i++) {
+            // 隐藏域id值
+            str_id = "hidden" + list[i];
+            // 控制是否选中
+            check_id = "check" + list[i];
+            hidden_elem = document.getElementById(str_id);
+            check_elem = document.getElementById(check_id);
+            check_elem.style.display = 'inline-block';
+            hidden_elem.value = parseInt(list[i]);
+        }
+    }
+
+    function clearAll(id_list) {
+        list = id_list.split(" ");
+        for (var i = 0; i < list.length - 1; i++) {
+            // 隐藏域id值
+            str_id = "hidden" + list[i];
+            // 控制是否选中
+            check_id = "check" + list[i];
+            hidden_elem = document.getElementById(str_id);
+            check_elem = document.getElementById(check_id);
+            check_elem.style.display = 'none';
+            hidden_elem.value = "";
+        }
+    }
+</script>
+</body>
+
+</html>

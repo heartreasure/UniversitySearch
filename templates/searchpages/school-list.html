@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
+    <title>高校门户网站综合检索系统</title>
+
+    <!-- Custom CSS -->
+    <link href="{% static 'SearchPage/html/dist/css/style.css' %}" rel="stylesheet">
+    <!-- page css -->
+    <link href="{% static 'SearchPage/html/dist/css/pages/icon-page.css' %}" rel="stylesheet">
+
+    <!--=====================================================================================================-->
+    <!-- 外联CSS文件 -->
+    <!--<link href="../../assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!--=====================================================================================================-->
+
+</head>
+
+<!--导航栏相关样式-->
+<style>
+    #sidebarnav li {
+        margin-top: 50px;
+    }
+
+    .left-sidebar {
+        margin-top: 70px;
+    }
+
+    .scrolled-sidebar {
+        margin-top: 60px;
+        height: 100%;
+    }
+
+    .explore {
+        margin-left: -85px;
+    }
+
+    .nav-menu {
+        margin-right: -85px;
+    }
+
+    .nav-text-box {
+        padding-top: 20px !important;
+    }
+</style>
+<!--end 导航栏样式-->
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body class="skin-default-dark fixed-layout">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li class="active"><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+<main id="main">
+</main>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <aside class="left-sidebar" id="left-sidebar">
+        <div class="d-flex no-block nav-text-box align-items-center">
+            <span><img src="{% static 'assets/images/favicon.png' %}" alt="elegant admin template"></span>
+            <a class="waves-effect waves-dark ml-auto hidden-sm-down" href="javascript:void(0)"><i class="ti-menu"></i></a>
+            <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i
+                    class="ti-menu ti-close"></i></a>
+        </div>
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_index' %}" aria-expanded="false"><i
+                            class="fa fa-search"></i><span class="hide-menu">词库搜索</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_manage' 1 %}" aria-expanded="false"><i
+                            class="fa fa-user-circle-o"></i><span class="hide-menu">搜索词库管理</span></a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_schoolList' %}" aria-expanded="false"><i
+                            class="fa fa-table"></i><span class="hide-menu"></span>学校URL列表</a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_recommend' %}" aria-expanded="false"><i
+                            class="fa fa-star"></i><span class="hide-menu"></span>分类检索及相关推荐</a></li>
+                    <li><a class="waves-effect waves-dark" href="{% url 'search_help' %}" aria-expanded="false"><i
+                            class="fa fa-question-circle"></i><span class="hide-menu"></span>使用帮助</a></li>
+                    <!-- <i class="fa fa-mortar-board"></i> -->
+                    <!-- <div class="text-center m-t-30">
+                        <a href="#" class="btn waves-effect waves-light btn-success hidden-md-down"> Upgrade to Pro</a>
+                    </div> -->
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid" style="margin-top: -80px;">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">学校URL列表</h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">词库信息管理</a></li>
+                            <li class="breadcrumb-item active">学校URL列表</li>
+                        </ol>
+                        <button type="button" class="btn btn-success d-none d-lg-block m-l-15">使用帮助</button>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">天津市高校</h4>
+                            <h6 class="card-subtitle">the schools located in Tianjin</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '天津市' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">江苏省高校</h4>
+                            <h6 class="card-subtitle">the schools located in Jiangsu Province</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '江苏省' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">浙江省高校</h4>
+                            <h6 class="card-subtitle">the schools located in Zhejiang Province</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '浙江省' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">上海市高校</h4>
+                            <h6 class="card-subtitle">the schools located in Shanghai</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '上海市' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">北京市高校</h4>
+                            <h6 class="card-subtitle">the schools located in Beijing</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '北京市' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">湖北省高校</h4>
+                            <h6 class="card-subtitle">the schools located in Hubei Province</h6>
+                            <section style="padding: 0">
+                                <div class="icon-list-demo row">
+                                    {% for school in school_list %}
+                                        {% if school.area == '湖北省' %}
+                                            {% if not school.is_build %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3"
+                                                     onclick="build({{ school.id }}, '{{ school.school_name }}')"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}</div>
+                                            {% else %}
+                                                <div class="col-sm-6 col-md-4 col-lg-3" style="color: green;"><i
+                                                        class="fa fa-mortar-board"></i>{{ school.school_name }}<i
+                                                        class="fa fa-check-circle" style="float: right; margin-top: 20px"></i></div>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!--footer-->
+    <footer class="footer" style="text-align: right;"> © 2020 <a href="javascript:;">高校门户网站检索系统</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    </footer>
+    <!-- End footer -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{% static 'SearchPage/assets/node_modules/jquery/jquery-3.2.1.min.js' %}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{% static 'SearchPage/assets/node_modules/popper/popper.min.js' %}"></script>
+<script src="{% static 'SearchPage/assets/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="{% static 'SearchPage/html/dist/js/perfect-scrollbar.jquery.min.js' %}"></script>
+<!--Wave Effects -->
+<script src="{% static 'SearchPage/html/dist/js/waves.js' %}"></script>
+<!--Menu sidebar -->
+<script src="{% static 'SearchPage/html/dist/js/sidebarmenu.js' %}"></script>
+<!--stickey kit -->
+<script src="{% static 'SearchPage/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js' %}"></script>
+<script src="{% static 'SearchPage/assets/node_modules/sparkline/jquery.sparkline.min.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static 'SearchPage/html/dist/js/custom.min.js' %}"></script>
+
+<!--the page scroll event-->
+<script>
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+                $("#left-sidebar").addClass('scrolled-sidebar');
+
+            } else {
+                $('#header').removeClass('header-scrolled');
+                $("#left-sidebar").removeClass('scrolled-sidebar');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+            $("#left-sidebar").addClass('scrolled-sidebar');
+        }
+    })
+</script>
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+<!--end the page scroll event-->
+
+<script>
+    function build(id, name) {
+        str = "是否要建立 " + name + " 的搜索词库";
+        var message = confirm(str);
+        if (message === true) {
+            location.href = '/search/search_build/' + id.toString()
+        }
+    }
+</script>
+</body>
+
+</html>

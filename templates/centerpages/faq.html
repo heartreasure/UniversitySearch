@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <title>高校门户网站综合检索系统</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- 外联CSS文件 -->
+    <!--<link href="../assets/lib/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <!--====================================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/lib/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CenterPage/assets/lib/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/main.css' %}">
+    <script src="{% static 'CenterPage/assets/js/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'CenterPage/assets/lib/bootstrap/js/bootstrap.js' %}"></script>
+</head>
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--the explore css-->
+<style>
+    .fixed-top {
+        height: 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        font-size: 16px;
+    }
+
+    .explore {
+        font-family: "Open Sans", sans-serif;
+        padding-left: 15px;
+
+    }
+
+    .container {
+        padding-right: 30px;
+    }
+</style>
+<!--end the explore css-->
+
+<!--the header scroll-->
+<script>
+    $(function () {
+        // Toggle .header-scrolled class to #header when page is scrolled
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+            } else {
+                $('#header').removeClass('header-scrolled');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+        }
+    })
+</script>
+<!--end the header scroll-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body class=" theme-blue">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left" style="float: left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block" style="float: right;">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li class="active"><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+    <!-- 侧边导航栏 -->
+    <div class="sidebar-nav">
+        <ul>
+            <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
+                <i class="fa fa-fw fa-envelope"></i>
+                我的资料<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="dashboard-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_index' %}"><span class="fa fa-caret-right"></span> 我的个人信息</a></li>
+                    <li><a href="{% url 'center_resetPassword' %}"><span class="fa fa-caret-right"></span> 重置密码</a></li>
+                </ul>
+            </li>
+
+            <!-- data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." -->
+            <li data-popover="true" rel="popover" data-placement="right"><a href="#" data-target=".premium-menu"
+                                                                            class="nav-header collapsed"
+                                                                            data-toggle="collapse"><i
+                    class="fa fa-fw fa-fighter-jet"></i> 我的足迹<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="premium-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_dynamic' 1 %}"><span class="fa fa-caret-right"></span> 我的动态</a></li>
+                    <li><a href="{% url 'center_collection' %}"><span class="fa fa-caret-right"></span> 我的收藏</a></li>
+                    <!--<li><a href="history.html"><span class="fa fa-caret-right"></span> 历史记录</a></li>-->
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-calendar"></i>
+                我的用户画像<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="legal-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_overview' %}"><span class="fa fa-caret-right"></span> 概览</a></li>
+                    <li><a href="{% url 'center_analysis' %}"><span class="fa fa-caret-right"></span> 图表分析</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-briefcase"></i>
+                后台管理 <i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="accounts-menu nav nav-list collapse">
+                    <!--<li><a href="user.html"><span class="fa fa-caret-right"></span> 新增用户/网站</a></li>-->
+                    <li><a href="/admin"><span class="fa fa-caret-right"></span> 后台主页</a></li>
+                    <li><a href="/admin/index"><span class="fa fa-caret-right"></span> 用户信息</a></li>
+                    <li><a href="/admin/usercenter"><span class="fa fa-caret-right"></span> 动态和收藏</a></li>
+                    <li><a href="/admin/searchcenter"><span class="fa fa-caret-right"></span> 高校网站信息</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'center_help' %}" class="nav-header"><i class="fa fa-fw fa-question-circle"></i> 帮助</a></li>
+            <li class="active"><a href="{% url 'center_faq' %}" class="nav-header"><i class="fa fa-fw fa-comment"></i> FAQ</a></li>
+        </ul>
+    </div>
+    <!-- 结束侧边导航栏 -->
+</main>
+<div class="content">
+    <div class="header">
+
+        <h1 class="page-title">FAQ</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+            <li class="active">FAQ</li>
+        </ul>
+
+    </div>
+    <div class="main-content">
+
+        <!-- <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            This page has an error message on it.
+        </div> -->
+        <style>
+            .faq-content a {
+                color: black;
+                text-decoration: underline;
+            }
+
+            .faq-content ol li {
+                margin-bottom: 10px;
+            }
+
+            p {
+                text-indent: 2em;
+                padding-bottom: 10px;
+            }
+        </style>
+        <div class="faq-content">
+            <h2>热门问题</h2>
+            <ol>
+                <li><a href="#q1">怎么修改自己的用户名和密码等个人信息？</a></li>
+                <li><a href="#q2">该怎么更好的管理“我的动态”和“我的收藏”？</a></li>
+                <li><a href="#q3">用户画像是什么？我能从用户画像中得到什么信息？</a></li>
+                <li><a href="#q4">后台管理系统是什么？如何更好的使用后台管理？</a></li>
+                <li><a href="#q5">访问“词库搜索”功能栏，在搜索过程中遇到问题该如何解决？</a></li>
+            </ol>
+            <hr>
+            <h2>其他问题</h2>
+            <ol>
+                <li><a href="#q6">在浏览过程中，有时候网页的响应速度很慢，如何解决?</a></li>
+                <li><a href="#q7">在“我的个人信息”页面，头像会出现图片无法正确回显的情况，如何解决？</a></li>
+                <li><a href="#q8">用户名的格式有什么要求吗？会影响网页访问吗？</a></li>
+                <li><a href="#q9">访问过程中遇到网站崩溃怎么办?</a></li>
+                <li><a href="#q10">高校门户网站检索系统中有在线聊天、评论、留言等社交功能吗?</a></li>
+                <li><a href="#q11">网站中存在大量我的个人信息，是否会存在隐私泄露等隐患？</a></li>
+                <li><a href="#q12">我已经设置好了自己的个人信息，下一步怎么创建一个属于自己的个性词库？</a></li>
+                <li><a href="#q13">怎么向网站提交自己的建议和反馈?</a></li>
+            </ol>
+
+            <hr>
+            <hr>
+
+            <!--<h2>常见问题</h2>-->
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q1"><i class="fa fa-fw fa-question-circle"></i> 怎么修改自己的用户名和密码等个人信息？</h3>
+            <p>在个人中心，点击“我的资料”选项卡，可以发现有两个下拉选项，在“我的个人信息”中，可以修改用户名、昵称、Email、联系电话、
+                基本信息、详细地址、头像等字段，而在“重置密码”中，用户可以修改自己的账户密码。</p>
+
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q2"><i class="fa fa-fw fa-question-circle"></i> 该怎么更好的管理“我的动态”和“我的收藏”？</h3>
+            <p>在“我的动态”和“我的收藏”中，用户可以自由的上传文字和图片等信息，用图片和文字来记录生活的点点滴滴，在“我的动态”中点击“新增动态”，
+                或者在“我的收藏”中点击“添加收藏”，可以添加相应的文字和图片。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q3"><i class="fa fa-fw fa-question-circle"></i> 用户画像是什么？我能从用户画像中得到什么信息？</h3>
+            <p>用户画像是根据用户的个人信息和搜索记录等信息而建立的，能够通过用户在网页的浏览、搜索和点击记录用户的搜索喜好，通过图表、文
+                字等方式分析用户画像，在“概览”和“图表分析”中两个选项中可以浏览自己的用户画像。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q4"><i class="fa fa-fw fa-question-circle"></i> 后台管理系统是什么？如何更好的使用后台管理？</h3>
+            <p>后台系统是许多网站普遍采用的一种管理数据库的方式，在后台管理系统中，可以通过可视化的方式操作数据库中的信息，
+                方便便捷的进行添加、删除、管理各类信息，用户可以通过登录网站的后台管理系统，更好管理数据库中的网站、用户、动态和收藏等信息。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q5"><i class="fa fa-fw fa-question-circle"></i> 访问“词库搜索”功能栏，在搜索过程中遇到问题该如何解决？</h3>
+            <p>我们在设计开发网站的过程中，在每个大的功能模块中都添加了相应的帮助和说明模块，因此在“词库搜索”选项卡中，也有相应的帮助和说明，
+                “个人中心”的使用帮助和“词库搜索”的使用帮助各有侧重，因此搜索过程中遇到的问题，可以在当前栏目下查看更为相关的使用帮助。</p>
+
+            <hr>
+
+            <!--<h2>使用过程中出现的问题</h2>-->
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q6"><i class="fa fa-fw fa-question-circle"></i> 在浏览过程中，有时候网页的响应速度很慢，如何解决?</h3>
+            <p>网站中大多数的网页都是动态网页，需要与服务器进行交互，信息才能呈现给用户，因此当服务器负载压力过大时，可能网页会出现短暂的卡顿现象，
+                尤其是带一些表单的页面，可能更容易出现响应速度慢的情况，若网页仍无法显示，请尝试刷新页面。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q7"><i class="fa fa-fw fa-question-circle"></i> 在“我的个人信息”页面，头像会出现图片无法正确回显的情况，如何解决？</h3>
+            <p>首先，请检查上传的文件是否为正确的图片格式，若上传的文件不是图片格式，那么在个人信息页面，就无法正常显示用户头像。
+                若上传的图片格式没有问题，那么请尝试刷新页面。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q8"><i class="fa fa-fw fa-question-circle"></i> 用户名的格式有什么要求吗？会影响网页访问吗？</h3>
+            <p>存储用户信息需要的session组件基于cookie实现，而cookie默认不支持中文，因此我们不建议将用户名设置为中文，
+                我们设计用户的模型字段时，在AUTH认证系统的基础上增加了“昵称”字段，用户可以自由设置昵称。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q9"><i class="fa fa-fw fa-question-circle"></i> 访问过程中遇到网站崩溃怎么办?</h3>
+            <p>请首先检查计算机、手机等终端设备的网络连接是否存在故障，网络的异常会导致网页的无法访问。如果确定网络连接没有问题，
+                刷新页面仍无法解决问题，请在最上方导航栏中的“联系我们”模块中提交具体的反馈信息，我们会及时处理。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q10"><i class="fa fa-fw fa-question-circle"></i> 高校门户网站检索系统中有在线聊天、评论、留言等社交功能吗?</h3>
+            <p>网站的建站初心是满足用户的获取信息的需求，在尽可能满足用户需求的同时，设计了“我的动态”和“我的收藏”等辅助功能，
+                给用户更好的浏览体验，但是网站暂时没有社交功能，但是我们项目团队也会积极的跟进，争取做一个功能齐备的综合性网站。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q11"><i class="fa fa-fw fa-question-circle"></i> 网站中存在大量我的个人信息，是否会存在隐私泄露等隐患？</h3>
+            <p>我们承诺一定尽力保护好每一位用户的个人隐私，“用户画像”等功能模块中，也是合理分析您的个人信息和浏览历史，绝不会出现主动泄露网站用户信息的情况，
+                请您放心，同时也希望您妥善保护好账户信息，避免被不法分子利用。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q12"><i class="fa fa-fw fa-question-circle"></i> 我已经设置好了自己的个人信息，下一步怎么创建一个属于自己的个性词库？</h3>
+            <p>词库搜索功能在“词库搜索”模块中，网站会默认给出一些高校的词库，用户不用建立自己的词库便能直接使用，如果您想建立自己的词库，可以在“学校URL列表”选项卡中添加，
+                或者在“搜索词库管理”选项卡中编辑和删除。</p>
+            <a href="#" style="float: right; line-height: 1.25em; display: inline-block; padding: .75em 0em;"><i
+                    class="fa fa-arrow-circle-up"></i>
+                Top</a>
+            <h3 id="q13"><i class="fa fa-fw fa-question-circle"></i> 怎么向网站提交自己的建议和反馈?</h3>
+            <p>在帮助页面、主页等许多页面的最下方，都标明了我们的邮箱、联系电话、地址等详细信息，您可以通过发送邮件或者拨打电话的方式联系我们，
+                给出您宝贵的意见和建议，我们会悉心听取和接受，并积极的予以改正。</p>
+        </div>
+
+
+        <!-- footer start -->
+        <footer>
+            <hr>
+            <p class="pull-right">A <a href="javascript:;">website</a>
+                by <a href="javascript:;">zhangheng</a></p>
+            <p>Â© 2020 <a href="javascript:;">高校门户网站检索系统</a></p>
+        </footer>
+        <!-- footer end -->
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+</body>
+</html>

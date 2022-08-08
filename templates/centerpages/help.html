@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <title>高校门户网站综合检索系统</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- 外联CSS文件 -->
+    <!--<link href="../assets/lib/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <!--====================================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/lib/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CenterPage/assets/lib/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/main.css' %}">
+    <script src="{% static 'CenterPage/assets/js/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'CenterPage/assets/lib/bootstrap/js/bootstrap.js' %}"></script>
+</head>
+
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--the explore css-->
+<style>
+    .fixed-top {
+        height: 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        font-size: 16px;
+    }
+
+    .explore {
+        font-family: "Open Sans", sans-serif;
+        padding-left: 15px;
+
+    }
+
+    .container {
+        padding-right: 30px;
+    }
+</style>
+<!--end the explore css-->
+
+<!--the header scroll-->
+<script>
+    $(function () {
+        // Toggle .header-scrolled class to #header when page is scrolled
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+            } else {
+                $('#header').removeClass('header-scrolled');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+        }
+    })
+</script>
+<!--end the header scroll-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body class=" theme-blue">
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left" style="float: left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block" style="float: right;">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li class="active"><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+    <!-- 侧边导航栏 -->
+    <div class="sidebar-nav">
+        <ul>
+            <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
+                <i class="fa fa-fw fa-envelope"></i>
+                我的资料<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="dashboard-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_index' %}"><span class="fa fa-caret-right"></span> 我的个人信息</a></li>
+                    <li><a href="{% url 'center_resetPassword' %}"><span class="fa fa-caret-right"></span> 重置密码</a></li>
+                </ul>
+            </li>
+
+            <!-- data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." -->
+            <li data-popover="true" rel="popover" data-placement="right"><a href="#" data-target=".premium-menu"
+                                                                            class="nav-header collapsed"
+                                                                            data-toggle="collapse"><i
+                    class="fa fa-fw fa-fighter-jet"></i> 我的足迹<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="premium-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_dynamic' 1 %}"><span class="fa fa-caret-right"></span> 我的动态</a></li>
+                    <li><a href="{% url 'center_collection' %}"><span class="fa fa-caret-right"></span> 我的收藏</a></li>
+                    <!--<li><a href="history.html"><span class="fa fa-caret-right"></span> 历史记录</a></li>-->
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-calendar"></i>
+                我的用户画像<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="legal-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_overview' %}"><span class="fa fa-caret-right"></span> 概览</a></li>
+                    <li><a href="{% url 'center_analysis' %}"><span class="fa fa-caret-right"></span> 图表分析</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-briefcase"></i>
+                后台管理 <i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="accounts-menu nav nav-list collapse">
+                    <!--<li><a href="user.html"><span class="fa fa-caret-right"></span> 新增用户/网站</a></li>-->
+                    <li><a href="/admin"><span class="fa fa-caret-right"></span> 后台主页</a></li>
+                    <li><a href="/admin/index"><span class="fa fa-caret-right"></span> 用户信息</a></li>
+                    <li><a href="/admin/usercenter"><span class="fa fa-caret-right"></span> 动态和收藏</a></li>
+                    <li><a href="/admin/searchcenter"><span class="fa fa-caret-right"></span> 高校网站信息</a></li>
+                </ul>
+            </li>
+
+            <li class="active"><a href="{% url 'center_help' %}" class="nav-header"><i
+                    class="fa fa-fw fa-question-circle"></i> 帮助</a></li>
+            <li><a href="{% url 'center_faq' %}" class="nav-header"><i class="fa fa-fw fa-comment"></i> FAQ</a></li>
+        </ul>
+    </div>
+    <!-- 结束侧边导航栏 -->
+</main>
+
+<div class="content">
+    <div class="header">
+
+        <h1 class="page-title">帮助</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+            <li class="active">帮助</li>
+        </ul>
+
+    </div>
+    <div class="main-content">
+
+        <div class="faq-content">
+            <div class="row">
+                <div class="col-sm-9 col-md-9">
+                    <div class="search-well">
+                        <form class="form-inline" style="margin-top:0px;">
+                            <input class="input-xlarge form-control" placeholder="Search Help..."
+                                   id="appendedInputButton" type="text">
+                            <button class="btn btn-default" type="button"><i class="fa fa-search"></i> Go</button>
+                        </form>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <p class="panel-heading">热门话题</p>
+                        <div class="panel-body">
+                            <ol>
+                                <li style="margin-bottom: 10px"><a href="#"
+                                                                   style="color: black; text-decoration: underline;">怎么修改自己的用户名和密码等个人信息？</a>
+                                </li>
+                                <li style="margin-bottom: 10px"><a href="#"
+                                                                   style="color: black; text-decoration: underline;">该怎么更好的管理“我的动态”和“我的收藏”？</a>
+                                </li>
+                                <li style="margin-bottom: 10px"><a href="#"
+                                                                   style="color: black; text-decoration: underline">用户画像是什么？我能从用户画像中得到什么信息？</a>
+                                </li>
+                                <li style="margin-bottom: 10px"><a href="#"
+                                                                   style="color: black; text-decoration: underline">后台管理系统是什么？如何更好的使用后台管理？</a>
+                                </li>
+                                <li style="margin-bottom: 10px"><a href="#"
+                                                                   style="color: black; text-decoration: underline">访问“词库搜索”功能栏，在搜索过程中遇到问题该如何解决？</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <p class="panel-heading">更多常见问题咨询</p>
+                        <div class="panel-body">
+                            <p>我们在FAQ模块中整理了一些常见问题的解答，或许能解决您的一些困扰，如果在帮助页面没有获得需要的信息，就点击下方的按钮试试吧！</p>
+                            <a href="{% url 'center_faq' %}" class="btn btn-primary">访问FAQ</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <!--<div class="panel panel-default">-->
+                    <!--<p class="panel-heading">热门问题分类</p>-->
+                    <!--<div class="panel-body">-->
+                    <!--<div class="row" style="text-align: center;">-->
+                    <!--<div class="pull-left unstyled col-sm-4 col-md-4">-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">账户问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">访问问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">其他问题</a></p>-->
+                    <!--</div>-->
+                    <!--<div class="pull-left unstyled col-sm-4 col-md-4">-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">账户问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">访问问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">其他问题</a></p>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">账户问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">访问问题</a></p>-->
+                    <!--<p><a href="#" class="btn btn-default" style="width: 115px;">其他问题</a></p>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="clearfix"></div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="panel panel-default">
+                        <p class="panel-heading">关于使用帮助</p>
+                        <div class="panel-body">
+                            <!--<h2>个人中心使用帮助</h2>-->
+                            <ul>
+                                <li>初次使用高校门户网站信息管理系统时，可能会有一些使用过程中更多困惑，因此我们在个人中心的"帮助”页面列举了一些用户在使用过程中的常见问题，
+                                    您可以点击“热门话题”中相关问题的链接来获得问题的解答，
+                                    赶紧去试试吧！
+                                </li>
+                                <hr>
+                                <li>我们将更多的常见问题和相关解答放在了“FAQ”模块中，要是在帮助页面未能解决自己的问题，您可以在左侧的导航栏中点击“FAQ”模块，
+                                    或者在“常见问题咨询”栏目中，点击下方的链接按钮，我们会带领您访问“FAQ”页面，您可以浏览更多用户提出的具有普遍性的问题，
+                                    相信一定能解决您的问题。
+                                </li>
+                                <hr>
+                                <li>若上述两种方式都不能满足你的需求，在页面右侧有我们详细的联系方式，您可以通过邮件、电话等方式联系上我们网站的工作人员，
+                                    我们会积极收集用户在使用过程中常见的问题，尽快的给您回复。若网站有什么意见或建议，您可以通过点击最上方的“导航栏”按钮来提出您宝贵的意见，
+                                    我们会积极的予以听取和改正。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <div class="toc">
+                        <h3 style="font-weight: bold">目录</h3>
+                        <ol>
+                            <li>热门话题</li>
+                            <li>常见问题咨询</li>
+                            <li>关于使用帮助</li>
+                            <!-- <li><a href="#">Returns</a></li>
+                            <li><a href="#">Your Account</a></li> -->
+                        </ol>
+                    </div>
+                    <hr>
+                    <div class="toc">
+                        <h3 style="font-weight: bold">联系我们</h3>
+                        <h4 style="font-size: 12px!important;">手机号码</h4>
+                        <p style="font-size: 12px!important;">+131 7383 5301</p>
+                        <hr>
+                        <h3 style="font-weight: bold">邮箱</h3>
+                        <p style="font-size: 12px!important;">zhangheng_tust@126.com</p>
+                        <hr>
+                        <h3 style="font-weight: bold">地址</h3>
+                        <address style="font-size: 12px!important;">
+                            天津<br>
+                            滨海新区<br>
+                            天津科技大学
+                        </address>
+                        <div>
+                            <button class="btn btn-default"><i class="fa fa-facebook"></i></button>
+                            <button class="btn btn-default"><i class="fa fa-twitter"></i></button>
+                            <button class="btn btn-default"><i class="fa fa-linkedin"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- footer start -->
+        <footer>
+            <hr>
+            <p class="pull-right">A <a href="javascript:;">website</a>
+                by <a href="javascript:;">zhangheng</a></p>
+            <p>Â© 2020 <a href="javascript:;">高校门户网站检索系统</a></p>
+        </footer>
+        <!-- footer end -->
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+</body>
+</html>

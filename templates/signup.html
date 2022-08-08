@@ -1,0 +1,279 @@
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <!-- meta data -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>高校门户网站综合检索系统</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/bootsnav.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/style_log.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/responsive.css' %}">
+
+
+    <!--页面顶部和底部的js、css-->
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- 外联CSS文件 -->
+    <link href="{% static 'assets/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!--end页面顶部和底部的js、css-->
+
+    <!--<script type="text/javascript" src="assets/js/log_js/jquery-2.1.0.js"></script>-->
+    <!--<script type="text/javascript" src="assets/js/log_js/json.js"></script>-->
+
+    <script src="{% static 'assets/js/log_js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/js/log_js/messages_zh.js' %}"></script>
+</head>
+
+<style>
+    label.error {
+        margin-left: 5px;
+        margin-top: 5px;
+        color: red;
+    }
+
+    .explore {
+        font-size: 28px;
+        margin: 0;
+        padding: 4px 0;
+        line-height: 1;
+        font-weight: 400;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+</style>
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li class="active"><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+<!-- ======= breadcrumbs Section ======= -->
+<main id="main">
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Sign up</h2>
+                <ol>
+                    <li><a href="{% url 'index' %}">主页</a></li>
+                    <li>注册</li>
+                </ol>
+            </div>
+
+        </div>
+    </section>
+</main>
+<!--end breadcrumbs-->
+
+<!-- signup start -->
+<form id="RegisterForm" action="" method="post">
+    {% csrf_token %}
+    <section class="signin signup" data-aos="fade-up">
+        <div class="container" style="margin-top: -90px">
+            <div class="sign-content">
+                <!--<h2>注册</h2>-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="signin-form">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="signup-username">用户名</label>
+                                    <input type="text" class="form-control" placeholder="请输入用户名" name="username"
+                                           id="signup-username">
+                                    <span class="error_tip" style="display: none; color: #e62e2e">提示信息</span>
+                                </div><!--/.form-group -->
+                            </div><!--/.form-col1 -->
+                            <div class="form-group">
+                                <label for="signup-email">邮箱</label>
+                                <input type="email" class="form-control" placeholder="请输入您的邮箱" name="email"
+                                       id="signup-email">
+                                <span class="error_tip" style="display: none; color: #e62e2e">提示信息</span>
+                            </div><!--/.form-group -->
+                            <div class="form-group">
+                                <label for="signup-password">密码</label>
+                                <input type="password" class="form-control" placeholder="请输入您的密码" name="password"
+                                       id="signup-password">
+                                <span class="error_tip" style="display: none; color: #e62e2e">提示信息</span>
+                            </div><!--/.form-group -->
+                            <div class="form-group">
+                                <label for="signup-check">确认密码</label>
+                                <input type="password" class="form-control" placeholder="请再次输入密码"
+                                       name="checkpassword" id="signup-check">
+                                <span class="error_tip" style="display: none; color: #e62e2e">提示信息</span>
+                            </div><!--/.form-group -->
+                        </div><!--/.signin-form -->
+                    </div><!--/.col -->
+                </div><!--/.row -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="signin-password">
+                            <div class="awesome-checkbox-list">
+                            </div><!--/.awesome-checkbox-list -->
+                        </div><!--/.signin-password -->
+                    </div><!--/.col -->
+                </div><!--/.row -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% if tips %}
+                            <div style="color: red"><i class="icofont-error"></i>{{ tips }}</div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="signin-footer">
+                            <input type="submit" value="立 即 注 册" class="btn signin_btn" data-toggle="modal"
+                                   data-target=".signin_modal">
+                            <p style="margin-top: 8px">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已有账号？
+                                <a href="{% url 'userLogin' %}"><span style="color: forestgreen">登录</span></a>
+                            </p>
+                        </div><!--/.signin-footer -->
+                    </div><!--/.col-->
+                </div><!--/.row -->
+
+            </div><!--/.sign-content -->
+
+        </div><!--/.container -->
+
+    </section><!--/.signin -->
+</form>
+
+<!-- signup end -->
+
+<!-- 外联js文件 -->
+<script src="{% static 'assets/lib/jquery/jquery.min.js' %}"></script>
+{#    <script src="{% static 'assets/lib/bootstrap/js/bootstrap.bundle.min.jsv' %}"></script>#}
+<script src="{% static 'assets/lib/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/lib/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/lib/waypoints/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'assets/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'assets/lib/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/lib/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/lib/aos/aos.js' %}"></script>
+
+<script src="{% static 'assets/js/signup.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+</body>
+
+</html>

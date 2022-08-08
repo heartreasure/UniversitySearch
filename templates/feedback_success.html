@@ -1,0 +1,228 @@
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <!-- meta data -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>高校门户网站综合检索系统</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/bootsnav.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/style_log.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/log_css/responsive.css' %}">
+
+
+    <!--页面顶部和底部的js、css-->
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <!--<link href="assets/images/apple-touch-icon.png" rel="apple-touch-icon">-->
+
+    <!-- 外联CSS文件 -->
+    <link href="{% static 'assets/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!--end页面顶部和底部的js、css-->
+
+    <!--<script type="text/javascript" src="assets/js/log_js/jquery-2.1.0.js"></script>-->
+    <!--<script type="text/javascript" src="assets/js/log_js/json.js"></script>-->
+
+    <script src="{% static 'assets/js/log_js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/js/log_js/messages_zh.js' %}"></script>
+</head>
+<style>
+    label.error {
+        margin-left: 5px;
+        margin-top: 5px;
+        color: red;
+    }
+
+    .explore {
+        font-size: 28px;
+        margin: 0;
+        padding: 4px 0;
+        line-height: 1;
+        font-weight: 400;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+</style>
+
+<!--header footer color-->
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+<!--the button css-->
+<style>
+    .back_to_login {
+        box-shadow: none;
+        width: 155px;
+        height: 44px;
+        font: 16px 'Open Sans', sans-serif;
+        background: #68A4C4;
+        color: #ffffff;
+        padding: 10px 24px;
+        border-radius: 5px;
+        transition: 0.4s;
+    }
+</style>
+<!--end the button css-->
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+
+        <div class="logo float-left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active"><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+<!-- ======= breadcrumbs Section ======= -->
+<main id="main">
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Contract Us</h2>
+                <ol>
+                    <li><a href="{% url 'index' %}">主页</a></li>
+                    <li>联系我们</li>
+                </ol>
+            </div>
+
+        </div>
+    </section><!-- End Contact Section -->
+</main>
+<!--end breadcrumbs-->
+
+<!-- signup start -->
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+        <div style="font-size: 20px;margin: 0 auto"><i class="icofont-check-circled"></i>&nbsp;&nbsp;提交成功！感谢您的反馈！</div>
+
+    </div>
+    <hr>
+    <!--<div class="row">-->
+    <!--<div style="font-size: 20px;margin: 0 auto">返回<a href="signin.html" style="font-size: 20px">首页</a></div>-->
+    <!--</div>-->
+
+    <!--</div>&lt;!&ndash;/.row &ndash;&gt;-->
+</div>
+
+
+<!-- signup end -->
+
+<!-- 外联js文件 -->
+<script src="{% static 'assets/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/lib/jquery.easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/lib/venobox/venobox.min.js' %}"></script>
+<script src="{% static 'assets/lib/waypoints/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'assets/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'assets/lib/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/lib/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/lib/aos/aos.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+
+
+</body>
+
+</html>

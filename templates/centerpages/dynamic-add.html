@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>高校门户网站综合检索系统</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- 图标 -->
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- 外联CSS文件 -->
+    <!--<link href="../assets/lib/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+    <link href="{% static 'assets/lib/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/lib/aos/aos.css' %}" rel="stylesheet">
+
+    <!-- 主CSS文件 -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <!--====================================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/lib/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CenterPage/assets/lib/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CenterPage/assets/css/main.css' %}">
+    <script src="{% static 'CenterPage/assets/js/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'CenterPage/assets/lib/bootstrap/js/bootstrap.js' %}"></script>
+    {#    <script src="{% static 'CenterPage/assets/js/ckeditor.js' %}"></script>#}
+    {#    <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>#}
+    <script type="text/javascript" src='{% static 'CenterPage/assets/js/tiny_mce_src.js' %}'></script>
+</head>
+<!--header footer color-->
+<script type="text/javascript">
+    tinyMCE.init({
+        'mode': 'textareas',
+        'theme': 'advanced',
+        'width': 930,
+        'height': 500
+    });
+</script>
+<style>
+    #header {
+        background-color: #2B2F3A;
+    }
+
+    .footer-newsletter, .footer-top {
+        background-color: #2B2F3A !important;
+    }
+
+    #footer {
+        background-color: #1E2128 !important;
+    }
+</style>
+<!--end header footer color-->
+
+<!--the explore css-->
+<style>
+    .fixed-top {
+        height: 50px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        font-size: 16px;
+    }
+
+    .explore {
+        font-family: "Open Sans", sans-serif;
+        padding-left: 15px;
+
+    }
+
+    .container {
+        padding-right: 30px;
+    }
+</style>
+<!--end the explore css-->
+
+<style>
+    .padding-bottom {
+        margin-top: 20px;
+    }
+</style>
+
+<!--the header scroll-->
+<script>
+    $(function () {
+        // Toggle .header-scrolled class to #header when page is scrolled
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#header').addClass('header-scrolled');
+            } else {
+                $('#header').removeClass('header-scrolled');
+            }
+        });
+
+        if ($(window).scrollTop() > 100) {
+            $('#header').addClass('header-scrolled');
+        }
+    })
+</script>
+<!--end the header scroll-->
+
+<!--任务栏下拉-->
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function () {
+        $('.demo-cancel-click').click(function () {
+            return false;
+        });
+    });
+</script>
+<!--end 任务栏下拉-->
+
+<!--去除头像旁边按钮-->
+<style>
+    .login_image > a:after {
+        content: none !important;
+    }
+</style>
+<!-- end 去除头像旁边按钮-->
+
+<!--在需要使用编辑器的地方插入textarea标签 -->
+<!--将相应的控件替换成编辑器代码 -->
+<script type="text/javascript">
+    window.onload = function () {
+        CKEDITOR.replace('description');
+    };
+</script>
+
+<body class=" theme-blue">
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container">
+        <div class="logo float-left" style="float: left">
+            <h1 class="text-light"><a href="#"><span class="explore">Explore</span></a></h1>
+            <!--可以用图片代替Explore文字-->
+            <!--<a href="index.html"><images src="assets/images/background.jpg" alt="" class="images-fluid"></a>-->
+        </div>
+        <nav class="nav-menu float-right d-none d-lg-block" style="float: right;">
+            <ul>
+                <li><a href="{% url 'index' %}">主页 <i class="la la-angle-down"></i></a></li>
+                <li><a href="{% url 'feature' %}#feature">关于网站</a></li>
+                {% if not user.username %}
+                    <li><a href="{% url 'userLogin' %}">登录</a></li>
+                    <li><a href="{% url 'userRegister' %}">注册</a></li>
+                {% endif %}
+                <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                <li class="active"><a href="{% url 'center_index' %}">个人中心</a></li>
+                <li class="drop-down"><a href="">更多功能</a>
+                    <ul>
+                        <li class="drop-down"><a href="#">个人中心</a>
+                            <ul>
+                                <li><a href="{% url 'center_index' %}">我的资料</a></li>
+                                <li><a href="{% url 'center_dynamic' 1 %}">我的足迹</a></li>
+                                <li><a href="{% url 'center_overview' %}">我的用户画像</a></li>
+                                <li><a href="{% url 'center_help' %}">个人中心帮助</a></li>
+                                <li><a href="{% url 'center_faq' %}">FAQ</a></li>
+                            </ul>
+                        </li>
+                        <li class="drop-down"><a href="#">词库信息管理</a>
+                            <ul>
+                                <li><a href="{% url 'search_manage' 1 %}">词库管理</a></li>
+                                <li><a href="{% url 'search_schoolList' %}">学校URL列表</a></li>
+                                <li><a href="{% url 'search_recommend' %}">分类检索及相关推荐</a></li>
+                                <li><a href="{% url 'search_help' %}">使用帮助</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">联系我们</a></li>
+                {% if user.username %}
+
+                    <li class="login_image drop-down">
+                        {% if request.user.photo %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{{ request.user.photo.url }}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% else %}
+                            <a href="{% url 'center_index' %}"><img
+                                    src="{% static 'assets/images/cartoon.jpeg' %}"
+                                    style="width: 40px;height: 40px;border-radius: 50%;margin-top: -10px;"></a>
+                        {% endif %}
+
+                        <ul class="login_image_function" style="visibility: hidden">
+                            <li><a href="{% url 'center_index' %}">个人中心</a></li>
+                            <li><a href="{% url 'search_index' %}">词库搜索</a></li>
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav><!-- .nav-menu -->
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+    <!-- 侧边导航栏 -->
+    <div class="sidebar-nav">
+        <ul>
+            <li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse">
+                <i class="fa fa-fw fa-envelope"></i>
+                我的资料<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="dashboard-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_index' %}"><span class="fa fa-caret-right"></span> 我的个人信息</a></li>
+                    <li><a href="{% url 'center_resetPassword' %}"><span class="fa fa-caret-right"></span> 重置密码</a></li>
+                </ul>
+            </li>
+
+            <!-- data-content="Items in this group require a <strong><a href='http://portnine.com/bootstrap-themes/aircraft' target='blank'>premium license</a><strong>." -->
+            <li data-popover="true" rel="popover" data-placement="right"><a href="#" data-target=".premium-menu"
+                                                                            class="nav-header collapsed"
+                                                                            data-toggle="collapse"><i
+                    class="fa fa-fw fa-fighter-jet"></i> 我的足迹<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="premium-menu nav nav-list collapse in">
+                    <li class="active"><a href="{% url 'center_dynamic' 1 %}"><span class="fa fa-caret-right"></span> 我的动态</a>
+                    </li>
+                    <li><a href="{% url 'center_collection' %}"><span class="fa fa-caret-right"></span> 我的收藏</a></li>
+                    <!--<li><a href="history.html"><span class="fa fa-caret-right"></span> 历史记录</a></li>-->
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-calendar"></i>
+                我的用户画像<i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="legal-menu nav nav-list collapse">
+                    <li><a href="{% url 'center_overview' %}"><span class="fa fa-caret-right"></span> 概览</a></li>
+                    <li><a href="{% url 'center_analysis' %}"><span class="fa fa-caret-right"></span> 图表分析</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#" data-target=".accounts-menu" class="nav-header collapsed" data-toggle="collapse"><i
+                    class="fa fa-fw fa-briefcase"></i>
+                后台管理 <i class="fa fa-collapse"></i></a></li>
+            <li>
+                <ul class="accounts-menu nav nav-list collapse">
+                    <!--<li><a href="user.html"><span class="fa fa-caret-right"></span> 新增用户/网站</a></li>-->
+                    <li><a href="/admin"><span class="fa fa-caret-right"></span> 后台主页</a></li>
+                    <li><a href="/admin/index"><span class="fa fa-caret-right"></span> 用户信息</a></li>
+                    <li><a href="/admin/usercenter"><span class="fa fa-caret-right"></span> 动态和收藏</a></li>
+                    <li><a href="/admin/searchcenter"><span class="fa fa-caret-right"></span> 高校网站信息</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'center_help' %}" class="nav-header"><i class="fa fa-fw fa-question-circle"></i> 帮助</a>
+            </li>
+            <li><a href="{% url 'center_faq' %}" class="nav-header"><i class="fa fa-fw fa-comment"></i> FAQ</a></li>
+        </ul>
+    </div>
+    <!-- 结束侧边导航栏 -->
+</main>
+
+<div class="content">
+    <div class="header">
+        <h3>记录下你的动态</h3>
+        <!--<h1 class="page-title">654</h1>-->
+        <!--<input type="submit" value="返回我的动态" class="btn btn-primary" style="display: block;">-->
+    </div>
+    <div class="main-content">
+        <div class="row blog-post">
+            <div class="col-sm-9 main-content">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">文章标题</label>
+                        <input type="text" class="form-control" name="title" placeholder="请输入文章的标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">作者</label>
+                        <input type="text" class="form-control" name="author" placeholder="请输入文章的作者">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">分类标签</label>
+                        <!--<input type="text" class="form-control" name="email" placeholder="记录该动态的时间">-->
+                        <br>
+                        {#                        <input type="" class="form-control" name='tags' placeholder="请输入文章的分类或标签，如（诗歌散文）"/>#}
+                        <select class="form-control" name="dropdown">
+                            {% for tag in tag_list %}
+                                {% if forloop.counter == 4 %}
+                                    <option selected="selected" value="{{ tag.0 }}">{{ tag.0 }}</option>
+                                {% endif %}
+
+                                <option value="{{ tag.0 }}">{{ tag.0 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="message">文章内容</label>
+                        {#                        <textarea class="form-control" rows="30" name="content" placeholder="文章的正文"></textarea>#}
+                        {#                        <textarea name="description" id="description"/></textarea>#}
+                        <textarea name='gcontent'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">文章配图</label>
+                        <!--<textarea class="form-control" rows="30" name="message" placeholder="文章的正文"></textarea>-->
+                        <input type="file" name="article_image">
+                    </div>
+                    <hr>
+                    <input type="submit" value="发布动态" class="btn btn-primary" style="display: inline-block;">
+                    <a href="{% url 'center_dynamic' 1 %}"><input type="button" value="返回" class="btn btn-primary"
+                                                                style="display: inline-block;"></a>
+                </form>
+            </div>
+
+            <!--sidebar start-->
+            <div class="col-sm-3 sidebar">
+                <div class="widget">
+                    <h3 style="margin-top: 0px;">时间日期</h3>
+                    <div class="widget-body">
+                        <ul class="icons list-unstyled">
+                            {% for time in time_list %}
+                                <li><a href="#"><i class="icon-angle-right"></i> {{ time.0|date:"Y-m-d H:i:s" }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget">
+
+                    <h3>分类标签</h3>
+                    <p class="widget-body">
+                        {% for item in tag_list %}
+                            <a href="#"><span class="large label tag label-info">{{ item.0 }}</span></a>
+                        {% endfor %}
+                    </p>
+
+                </div>
+                <hr>
+                <div class="widget">
+                    <h3>关于我的动态</h3>
+                    <p class="widget-body">
+                        一个安置自己的心情的角落，生活中的点点滴滴都是一份难得的经历，在这里记录你的生活吧！
+                    </p>
+                </div>
+            </div>
+            <!--sidebar end-->
+
+        </div>
+
+    </div>
+
+    <!-- footer start -->
+    <footer>
+        <hr>
+        <p class="pull-right">A <a href="javascript:;">website</a>
+            by <a href="javascript:;">zhangheng</a></p>
+        <p>Â© 2020 <a href="javascript:;">高校门户网站检索系统</a></p>
+    </footer>
+    <!-- footer end -->
+
+</div>
+<script src="{% static 'CenterPage/assets/lib/bootstrap/js/bootstrap.js' %}"></script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(function () {
+        $('.demo-cancel-click').click(function () {
+            return false;
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('.login_image').mouseenter(function () {
+            $('.login_image_function').css('visibility', 'visible')
+        })
+        $('.login_image').mouseleave(function () {
+            $('.login_image_function').css('visibility', 'hidden')
+        })
+    })
+</script>
+</body>
+</html>
